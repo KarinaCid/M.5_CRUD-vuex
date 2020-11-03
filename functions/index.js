@@ -49,11 +49,11 @@ app.post("/users", async (req, res) => {
   res.send(req.body);
 });
 
-app.delete("/users/:id", async (req, res) => {
+app.delete("/users", async (req, res) => {
   const beer = await admin
     .firestore()
     .collection("users")
-    .doc(req.params.id)
+    .doc(req.body)
     .delete();
   res.send(beer);
 });

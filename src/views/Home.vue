@@ -6,10 +6,10 @@
     <ul>
       <li v-for="user in usersList" :key="user.id">
         {{ user.data.name }} | {{ user.data.email }}
+        <a href="#" @click.prevent="deleteUser(user.id)">Eliminar</a>
+        |
+        <a href="#" @click.prevent="editUser(user)">Editar</a>
       </li>
-      <a href="#">Eliminar</a>
-      |
-      <a href="#">Editar</a>
     </ul>
   </div>
 </template>
@@ -28,7 +28,7 @@ export default {
     ...mapState(["usersList"]),
   },
   methods: {
-    ...mapActions(["getUsersList"]),
+    ...mapActions(["getUsersList", "deleteUser", "editUser"]),
   },
   created() {
     this.getUsersList();

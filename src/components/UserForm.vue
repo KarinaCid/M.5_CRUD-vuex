@@ -25,6 +25,7 @@
       <button
         @click.prevent="submitUser"
         type="submit"
+        v-text="currentUser.id ? 'Actualizar' : 'Crear'"
         class="btn btn-primary mb-2"
       >
         Crear
@@ -35,7 +36,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 export default {
   data() {
     return {
@@ -49,13 +50,15 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["createUser"]),
+    ...mapActions(["createUser", "updateUser"]),
     submitUser() {
       if (!this.isEmptyUser()) {
-        this.createUser(this.currentUser.data);
+        this.currentUser.id
+          ? this.updateUser(this.currentUser)
+          : this.createUser(this.currentUser.data);
         this.emptyUser();
       } else {
-        alert("Ambos campos son obligatirios");
+        alert("Ambos campos son obligatorios");
       }
     },
     isEmptyUser() {
@@ -67,6 +70,16 @@ export default {
       this.currentUser.data.name = "";
       this.currentUser.data.email = "";
       this.currentUser.id = null;
+    },
+  },
+  computed: {
+    ...mapState(["editUser"]),
+  },
+  watch: {
+    editUser: function() {
+      this.currentUser.id = this.editUser.id;
+      this.currentUser.data.email = this.editUser.data.email;
+      this.currentUser.data.name = this.editUser.data.name;
     },
   },
 };
